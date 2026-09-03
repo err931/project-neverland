@@ -1,0 +1,13 @@
+assert_lefthook_installed: true
+pre-commit:
+  parallel: true
+  commands:
+    betterleaks:
+      run: mise x betterleaks -- betterleaks git --pre-commit --staged --verbose
+    credo:
+      glob: "*.{ex,exs}"
+      run: mise x -- mix credo --strict
+    format:
+      glob: "*.{ex,exs}"
+      run: mise x -- mix format {staged_files}
+      stage_fixed: true
