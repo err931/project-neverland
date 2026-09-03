@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/matrix-portable-server-signing-key-bundle.schema.json",
+  "title": "Matrix Server Signing Key Bundle",
+  "description": "JWKS-based internal format for managing Matrix server signing keys",
+  "type": "object",
+  "required": [
+    "keys"
+  ],
+  "properties": {
+    "keys": {
+      "type": "array",
+      "description": "Array of server signing keys. Must contain exactly one active key in steady state.",
+      "items": {
+        "$ref": "#/$defs/key"
+      },
+      "contains": {
+        "$ref": "#/$defs/activeKey"
+      },
+      "minContains": 1,
+      "maxContains": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "key": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/activeKey"
+        },
+        {
+          "$ref": "#/$defs/revokedKey"
+        }
+      ]
+    },
+    "activeKey": {
+      "type": "object",
+      "title": "Active Key",
+      "description": "Current active key used for signing Matrix events.",
+      "required": [
+        "kty",
+        "crv",
+        "kid",
+        "x",
+        "d"
+      ],
+      "properties": {
+        "kty": {
+          "type": "string",
+          "const": "OKP"
+        },
+        "crv": {
+          "type": "string",
+          "const": "Ed25519"
+        },
+        "kid": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_]+$",
+          "description": "Matrix key ID version component"
+        },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$",
+          "description": "Unpadded Base64URL encoded Ed25519 public key (32 bytes = 43 chars)"
+        },
+        "d": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$",
+          "description": "Unpadded Base64URL encoded Ed25519 private key seed (32 bytes = 43 chars)"
+        }
+      },
+      "not": {
+        "required": [
+          "revoked"
+        ]
+      },
+      "additionalProperties": false
+    },
+    "revokedKey": {
+      "type": "object",
+      "title": "Revoked Key",
+      "description": "Old public key whose private key has been purged.",
+      "required": [
+        "kty",
+        "crv",
+        "kid",
+        "x",
+        "revoked"
+      ],
+      "properties": {
+        "kty": {
+          "type": "string",
+          "const": "OKP"
+        },
+        "crv": {
+          "type": "string",
+          "const": "Ed25519"
+        },
+        "kid": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_]+$",
+          "description": "Matrix key ID version component"
+        },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$",
+          "description": "Unpadded Base64URL encoded Ed25519 public key (32 bytes = 43 chars)"
+        },
+        "revoked": {
+          "type": "object",
+          "required": [
+            "revoked_at"
+          ],
+          "properties": {
+            "revoked_at": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "UNIX timestamp in milliseconds when the key was revoked"
+            },
+            "reason": {
+              "type": "string",
+              "description": "Reason for revocation (e.g., superseded, exposed, unknown)"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "not": {
+        "required": [
+          "d"
+        ]
+      },
+      "additionalProperties": false
+    }
+  }
+}
