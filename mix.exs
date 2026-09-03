@@ -7,7 +7,8 @@ defmodule Honeywagon.MixProject do
       version: "0.1.0",
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      compilers: [:boundary] ++ Mix.compilers()
     ]
   end
 
@@ -20,6 +21,7 @@ defmodule Honeywagon.MixProject do
 
   defp deps do
     [
+      {:boundary, "~> 0.10", runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_slop, "~> 0.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
