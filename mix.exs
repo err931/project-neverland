@@ -27,6 +27,18 @@ defmodule Honeywagon.MixProject do
 
   defp deps do
     [
+      {:ecto_sql, "~> 3.14"},
+      {:postgrex, ">= 0.0.0"},
+      {:nebulex, "~> 3.0"},
+      {:nebulex_local, "~> 3.0"},
+      {:decorator, "~> 1.4"},
+      {:bandit, "~> 1.12"},
+      {:req, "~> 0.7.0"},
+      {:jose, "~> 1.11"},
+      {:hammer, "~> 7.4"},
+      {:jason, "~> 1.4"},
+      {:telemetry, "~> 1.4"},
+      {:rustler, "~> 0.38", runtime: false},
       {:boundary, "~> 0.10", runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_slop, "~> 0.4", only: [:dev, :test], runtime: false},
