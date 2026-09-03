@@ -37,6 +37,8 @@ defmodule Honeywagon.MixProject do
       {:nebulex_local, "~> 3.0"},
       {:decorator, "~> 1.4"},
       {:bandit, "~> 1.12"},
+      {:plug, "~> 1.20"},
+      {:corsica, "~> 2.1"},
       {:req, "~> 0.7.0"},
       {:jose, "~> 1.11"},
       {:hammer, "~> 7.4"},
