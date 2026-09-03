@@ -8,7 +8,13 @@ defmodule Honeywagon.MixProject do
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      compilers: [:boundary] ++ Mix.compilers()
+      compilers: [:boundary] ++ Mix.compilers(),
+      test_coverage: [
+        summary: [threshold: 80],
+        ignore_modules: [
+          Honeywagon.Native.Ruma
+        ]
+      ]
     ]
   end
 
